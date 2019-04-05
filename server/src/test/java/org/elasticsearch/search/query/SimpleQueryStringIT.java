@@ -298,6 +298,12 @@ public class SimpleQueryStringIT extends ESIntegTestCase {
                                 SimpleQueryStringFlag.FUZZY, SimpleQueryStringFlag.PREFIX)).get();
         assertHitCount(searchResponse, 1L);
         assertFirstHit(searchResponse, hasId("4"));
+
+        searchResponse = client()
+            .prepareSearch()
+            .setQuery(simpleQueryStringQuery("foo bar").flags(SimpleQueryStringFlag.NONE).minimumShouldMatch("2")).get();
+            assertHitCount(searchResponse, 1L);
+            assertFirstHit(searchResponse, hasId("4"));
     }
 
     public void testSimpleQueryStringLenient() throws ExecutionException, InterruptedException {
